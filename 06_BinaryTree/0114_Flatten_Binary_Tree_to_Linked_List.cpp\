@@ -1,0 +1,68 @@
+/**
+ * @file 0114_Flatten_Binary_Tree_to_Linked_List.cpp
+ * @brief 114. 二叉树展开为链表
+ * @link https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/
+ * 
+ * @algorithm 寻找前驱节点 (Predecessor Logic) / 原地修改
+ * @time_complexity O(N) - 每个节点访问次数有限（寻找前驱的过程总计也是线性的）
+ * @space_complexity O(1) - 真正的原地修改，不需要递归栈或额外容器
+ * 
+ * @note 核心思路：
+ * 1. 目标：将二叉树展开为单链表，顺序与【前序遍历】一致，且必须使用 right 指针，left 置空。
+ * 2. 规律发现：在前序遍历中，根节点的右子树，应该接在左子树的“最右节点”后面。
+ * 3. 算法步骤：
+ *    - 遍历当前节点 curr。
+ *    - 如果 curr 有左子树：
+ *      a. 找到左子树中最右边的节点（即左子树在前序遍历中的最后一个节点，称为 predecessor）。
+ *      b. 将 curr 的右子树整个挂到 predecessor 的右边。
+ *      c. 将 curr 的左子树整体移到右边，并将左边置为 nullptr。
+ *    - 继续处理下一个右节点（即原左子树的根）。
+ */
+
+using namespace std;
+
+/**
+ * Definition for a binary tree node.
+ */
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    /**
+     * @brief 原地展开逻辑
+     * Cherno 视角：通过直接操作指针物理地址，规避了递归带来的系统栈开销（O(H)）。
+     */
+    void flatten(TreeNode* root) {
+        TreeNode* curr = root;
+
+        while (curr != nullptr) {
+            // 1. 如果存在左子树，说明需要进行“平铺”操作
+            if (curr->left != nullptr) {
+                // 2. 寻找左子树中的前驱节点（左子树最右边的叶子）
+                TreeNode* predecessor = curr->left;
+                while (predecessor->right != nullptr) {
+                    predecessor = predecessor->right;
+                }
+
+                // 3. 【核心指针交换】：
+                // 将原有的右子树挂在左子树最右节点的下方
+                predecessor->right = curr->right;
+                
+                // 将整个左子树移到右边
+                curr->right = curr->left;
+                
+                // ！！！ 必须将左指针置空，否则不符合单链表定义，且可能导致死循环
+                curr->left = nullptr;
+            }
+            
+            // 4. 继续处理下一个节点
+            // 注意：由于刚才的交换，现在的右节点其实是原先的左节点
+            curr = curr->right;
+        }
+    }
+};
