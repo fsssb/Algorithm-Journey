@@ -43,17 +43,23 @@ class Solution
 {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals){
+        //加速IO
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        
+        //边界处理
         if(intervals.size() <= 1){
             return intervals;
         }
-
+        //按照区间首位排序
         sort(intervals.begin(),intervals.end());
 
         vector<vector<int>> ans;
         
+
         int left = intervals[0][0];
         int right = intervals[0][1];
-
+        //循环合并区间，不能合并的就push到result
         for(int i = 1; i < intervals.size(); ++i)
         {
             if(intervals[i][0] <= right){
@@ -65,6 +71,7 @@ public:
                 right = intervals[i][1];
             }
         }
+        //最后一组区间需要单独处理！
         ans.push_back({left,right});
         return ans;
     }
