@@ -66,31 +66,20 @@ public:
 *没有内存碎片/动态分配：unordered_map 内部是由链表/桶组成的，节点是在堆上动态 new 出来的。
 *而 vector<int>(128, -1) 是一块极其小且连续的内存，完美命中 CPU Cache（缓存命中率 100%）。
 */
-class Solution1{
-
+class Solution{
 public:
     int lengthOfLongestSubstring(string s) {
-        int len = s.length();
-        if (len < 2) return len;
+        vector<int> last_index(128,-1);
+        int n = s.length();
 
-        vector<int> charVector(128,-1);
-
-        int maxLength = 0;
-        int left = 0;
-
-        for(int right = 0; right < len; right++)
-        {
-            char currentChar = s[right];
-
-            if(charVector[currentChar] != -1)
-            {
-                left = max(left,charVector[currentChar] + 1);
-            }
-
-            charVector[currentChar] = right;
-            maxLength = max(maxLength,right - left + 1);
+        int max_len = 0;
+        int l = 0;
+        for(int r =0; r < n; ++r){
+            l = max(l,last_index[s[r]] + 1);
+            max_len = max(max_len,r -l + 1);
+            last_index[s[r]] = r;
         }
-        return maxLength;
+        return max_len;
     }
 };
 
