@@ -50,3 +50,26 @@ public:
         return max_len;
     }
 };
+
+/*
+    class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+       
+        //tails[i] 表示在当前的长度 i + 1 下的尾部最小的数！
+        vector<int> tails;
+
+        for(int num : nums){
+            auto it = lower_bound(tails.begin(),tails.end(),num);
+            if(it == tails.end()){
+                tails.push_back(num);
+            }else{
+                *it = num;
+            }
+        }
+        return tails.size();
+    }
+
+      
+};
+*/
