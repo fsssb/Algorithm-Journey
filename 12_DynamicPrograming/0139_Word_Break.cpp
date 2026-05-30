@@ -62,3 +62,37 @@ public:
         return dp[n];
     }
 };
+
+
+/*
+    我们可以盯着题目给出的**数据范围（Constraints）**来寻找线索：
+    字符串 s 的长度：最大为 300[1]。
+    字典中单词的最大长度：最大只有 20[1]！
+    发现痛点了吗？
+    在我们的基础版代码中：
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 0; j < i; ++j) { // 这里 j 从 0 开始往右扫
+    如果当 i = 100 时，j 从 0 开始。我们提取的后缀子串长度就是 i - j（比如 100 - 0 = 100）。
+    但是，字典里的单词最长也就 20[1]！我们去字典里查一个长度为 100、80 甚至 30 的单词，是 100% 绝对不可能查到的！
+
+*/
+
+// // 1. 先找出字典中单词的最大长度
+// int max_len = 0;
+// for (const string& word : wordDict) {
+//     max_len = max(max_len, (int)word.length());
+// }
+
+// // 2. 状态转移
+// for (int i = 1; i <= n; ++i) {
+//     // 💡 优化：j 倒着走，且最多只往前看 max_len 的距离！
+//     for (int j = i - 1; j >= max(0, i - max_len); --j) {
+//         if (dp[j]) {
+//             string suffix = s.substr(j, i - j);
+//             if (word_set.count(suffix)) {
+//                 dp[i] = true;
+//                 break; // 只要找到一种拆分方式，就成功
+//             }
+//         }
+//     }
+// }
