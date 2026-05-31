@@ -23,21 +23,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 前缀树节点结构体
-struct TrieNode {
-    bool isEnd;
-    TrieNode* children[26];
-
-    // 构造函数：清空内存，赋初值
-    TrieNode() {
-        isEnd = false;
-        // 强制初始化所有指针为 nullptr
-        std::fill(begin(children), end(children), nullptr);
-    }
-};
-
 class Trie {
 private:
+
+        // 前缀树节点结构体
+    struct TrieNode {
+        bool isEnd;
+        TrieNode* children[26];
+
+        // 构造函数：清空内存，赋初值
+        TrieNode() {
+            isEnd = false;
+            // 强制初始化所有指针为 nullptr
+            std::fill(begin(children), end(children), nullptr);  //std::fill(children, children + 26, nullptr);  
+        }
+    };
+
     TrieNode* root;
 
     // 递归后序遍历，彻底释放堆区节点，防止内存泄漏
@@ -63,7 +64,7 @@ public:
     }
 
     // 向前缀树中插入一个单词
-    void insert(string word) {
+    void insert(const string& word) {
         TrieNode* curr = root;
         for (char ch : word) {
             int index = ch - 'a';
@@ -79,7 +80,7 @@ public:
     }
 
     // 检索一个单词是否存在于前缀树中
-    bool search(string word) {
+    bool search(const string& word) {
         TrieNode* curr = root;
         for (char ch : word) {
             int index = ch - 'a';
@@ -94,7 +95,7 @@ public:
     }
 
     // 检索是否存在任何单词以给定前缀开头
-    bool startsWith(string prefix) {
+    bool startsWith(const string& prefix) {
         TrieNode* curr = root;
         for (char ch : prefix) {
             int index = ch - 'a';
@@ -108,6 +109,7 @@ public:
         return true;
     }
 };
+
 
 
 
