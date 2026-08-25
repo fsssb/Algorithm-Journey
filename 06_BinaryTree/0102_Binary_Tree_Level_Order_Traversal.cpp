@@ -36,7 +36,7 @@ public:
             for (int i = 0; i < size; i++) {
                 TreeNode* node = que.front();
                 que.pop();
-                
+
                 currentLevel.push_back(node->val);
 
                 // 将下一层的孩子放入队列
@@ -44,7 +44,7 @@ public:
                 if (node->right) que.push(node->right);
             }
             // 当前层处理完毕，装入结果集
-            result.push_back(move(currentLevel)); // 侯捷：使用 move 避免深拷贝
+            result.push_back(std::move(currentLevel)); // 侯捷：使用 move 避免深拷贝
         }
         return result;
     }
